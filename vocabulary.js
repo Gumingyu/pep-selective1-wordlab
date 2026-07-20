@@ -388,15 +388,10 @@ DDT|n. 滴滴涕（旧时尤用作农业杀虫剂）|proper
 `
 };
 
-const VOCABULARY = Object.fromEntries(
-  Object.entries(RAW_VOCABULARY).map(([unit, raw]) => [
-    unit,
-    raw.trim().split("\n").filter(Boolean).map((line, index) => {
-      const [term, meaning, type] = line.split("|");
-      return { id: `${unit}-${index + 1}`, unit, term, meaning, type };
-    })
-  ])
+const VOCABULARY = Object.entries(RAW_VOCABULARY).flatMap(([unit, raw]) =>
+  raw.trim().split("\n").filter(Boolean).map((line, index) => {
+    const [word, meaning, type = "core"] = line.split("|");
+    return { id: `${unit}-${index + 1}`, unit, word: word.trim(), meaning: meaning.trim(), type: type.trim() };
+  })
 );
-
-const ALL_WORDS = Object.values(VOCABULARY).flat();
 
